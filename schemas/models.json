@@ -1,0 +1,10 @@
+{
+    "Llama 2 13B Chat": "llama-2-13b-chat",
+    "Llama 2 70B Chat": "llama-2-70b-chat",
+    "Perplexity 7B Chat Alpha": "pplx-7b-chat-alpha",
+    "Perplexity 70B Chat Alpha": "pplx-70b-chat-alpha",
+    "Code Llama 34B Instruct": "codellama-34b-instruct",
+    "Mistral 7B Instruct": "mistral-7b-instruct",
+    "Open Hermes 2 Mistral 7B": "openhermes-2-mistral-7b",
+    "Open Hermes 2.5 Mistral 7B": "openhermes-2.5-mistral-7b"
+}
