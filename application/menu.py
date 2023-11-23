@@ -88,6 +88,7 @@ class ConsoleWidget(QWidget):
 class OptionsPanel(QWidget):
     def __init__(self, console, config, baibot):
         super().__init__()
+        self.messageCount = 0
         self.console = console
         self.config = config
         self.baibot = baibot
@@ -295,7 +296,7 @@ class OptionsPanel(QWidget):
         
         # Creates a Worker for API Signals
         query = QueryObject(apitoken, model_name, personality_description, message_length_description, token_limit, question, emoji)
-        self.APIWorker = SendAPI(query, self.baibot)
+        self.APIWorker = SendAPI(query, self.baibot, self.messageCount)
         
         # Connect Messages to Console
         self.APIWorker.signals.inquiry.connect(self.console.add_inquiry)
@@ -333,8 +334,9 @@ class SendAPISignals(QObject):
     response = Signal(str)
     
 class SendAPI(QRunnable):
-    def __init__(self, query, baibot):
+    def __init__(self, query, baibot, messageCount):
         super().__init__()
+        self.messageCount = messageCount
         self.query = query
         self.baibot = baibot
         self.signals = SendAPISignals()
@@ -353,6 +355,9 @@ class SendAPI(QRunnable):
         
         # Sends Response to Console
         self.signals.response.emit(response)
+        
+        # Creates a TTS Message
+        bc.ttsMessage(response, self.messageCount)
         
         # Sends Finished Signal to Console
         #self.signals.finished.emit(f'Finished Querying API')
