@@ -1,10 +1,9 @@
 {
-    "Llama 2 13B Chat": "llama-2-13b-chat",
+    "Perplexity 7B Chat": "pplx-7b-chat",
+    "Perplexity 70B Chat": "pplx-70b-chat",
+    "Perplexity 7B Online": "pplx-7b-online",
+    "Perplexity 70B Online": "pplx-70b-online",
     "Llama 2 70B Chat": "llama-2-70b-chat",
-    "Perplexity 7B Chat Alpha": "pplx-7b-chat-alpha",
-    "Perplexity 70B Chat Alpha": "pplx-70b-chat-alpha",
     "Code Llama 34B Instruct": "codellama-34b-instruct",
-    "Mistral 7B Instruct": "mistral-7b-instruct",
-    "Open Hermes 2 Mistral 7B": "openhermes-2-mistral-7b",
-    "Open Hermes 2.5 Mistral 7B": "openhermes-2.5-mistral-7b"
+    "Mistral 7B Instruct": "mistral-7b-instruct"
 }

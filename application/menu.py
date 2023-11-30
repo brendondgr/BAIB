@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QPushButton, QVBoxLayout, QSizePolicy, QTextEdit, QComboBox, QCheckBox, QLineEdit, QSplitter
+from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QPushButton, QVBoxLayout, QSizePolicy, QTextEdit, QComboBox, QCheckBox, QLineEdit, QSplitter, QLabel
 from PySide6.QtCore import Qt, QDateTime, QThreadPool
 from BAI import BAI_commands as bc
 from BAI import BAI_Bot as bb
@@ -29,23 +29,29 @@ class Menu(QMainWindow):
         self.show()
         
     def setCustomCentralWidget(self):
-        # Createa a console widget equal to right box
-        right_box = ConsoleWidget()
-        left_box = OptionsPanel(right_box, self.config, self.baibot)
+        # Create a console widget equal to right box
+        right_box = QWidget()
+        right_layout = QVBoxLayout()
+        console_widget = ConsoleWidget()
+        right_layout.addWidget(console_widget)
+        right_box.setLayout(right_layout)  # Set the layout of right_box to right_layout
         
+        left_box = OptionsPanel(console_widget, self.config, self.baibot)
+
         # Add the widgets to the splitter
         splitter = QSplitter(Qt.Horizontal)
         splitter.addWidget(left_box)
         splitter.addWidget(right_box)
-        
+
         # Set the initial sizes of the widgets
         splitter.setSizes([400, 400])
-        
+
         # Set the stretch factor of the left_box to 0 and the stretch factor of the right_box to 1
         splitter.setStretchFactor(0, 0)
         splitter.setStretchFactor(1, 1)
-        
+
         return splitter
+
 
 ############################################################################
 ##   This widget will be used to display what is occuring in the program  ##
@@ -60,7 +66,6 @@ class ConsoleWidget(QWidget):
     def init_ui(self):
         self.layout = QVBoxLayout(self)
         self.text_edit = QTextEdit(self)
-        self.text_edit.setReadOnly(True)
         self.text_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.layout.addWidget(self.text_edit)
 
@@ -128,16 +133,13 @@ class OptionsPanel(QWidget):
         # Sets the layout for the token block to QV
         self.apitoken_block.setLayout(QHBoxLayout(self))
         # Adds a label to the token block
-        self.apitoken_label = QTextEdit(self)
-        self.apitoken_label.setReadOnly(True)
+        self.apitoken_label = QLabel(self)
         self.apitoken_label.setText("API Token:")
         # Sets Sizes for the label
-        self.apitoken_label.setFixedSize(150, 30)
         self.apitoken_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         # Adds Items to List
         self.apitoken_textbox = QLineEdit(self)
         self.apitoken_textbox.setText(apitoken)
-        self.apitoken_textbox.setFixedHeight(30)
         # Adds Items to Token Block
         self.apitoken_block.layout().addWidget(self.apitoken_label)
         self.apitoken_block.layout().addWidget(self.apitoken_textbox)
@@ -155,15 +157,12 @@ class OptionsPanel(QWidget):
         # Sets the layout for the model block to QV
         self.model_block.setLayout(QHBoxLayout(self))
         # Adds a label to the model block
-        self.model_label = QTextEdit(self)
-        self.model_label.setReadOnly(True)
+        self.model_label = QLabel(self)
         self.model_label.setText("Model:")
         # Sets Sizes for the label
-        self.model_label.setFixedSize(150, 30)
         self.model_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         # Adds Items to List
         self.model_dropdown = QComboBox(self)
-        self.model_dropdown.setFixedHeight(30)
         self.model_dropdown.addItems(model_list)
         # Adds Items to Model Block
         self.model_block.layout().addWidget(self.model_label)
@@ -182,16 +181,13 @@ class OptionsPanel(QWidget):
         # Sets the layout for the personality block to QV
         self.personality_block.setLayout(QHBoxLayout(self))
         # Adds a label to the personality block
-        self.personality_label = QTextEdit(self)
-        self.personality_label.setReadOnly(True)
+        self.personality_label = QLabel(self)
         self.personality_label.setText("Personality Type:")
         # Sets Sizes for the label
-        self.personality_label.setFixedSize(150, 30)
         self.personality_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         
         # Adds Items to List
         self.personality_dropdown = QComboBox(self)
-        self.personality_dropdown.setFixedHeight(30)
         self.personality_dropdown.addItems(personality_list)
         # Adds Items to Personality Block
         self.personality_block.layout().addWidget(self.personality_label)
@@ -211,15 +207,12 @@ class OptionsPanel(QWidget):
         # Sets the layout for the length block to QV
         self.message_length_block.setLayout(QHBoxLayout(self))
         # Adds a label to the length block
-        self.message_length_label = QTextEdit(self)
-        self.message_length_label.setReadOnly(True)
+        self.message_length_label = QLabel(self)
         self.message_length_label.setText("Response Length:")
         # Sets Sizes for the label
-        self.message_length_label.setFixedSize(150, 30)
         self.message_length_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         # Adds Items to List
         self.message_length_dropdown = QComboBox(self)
-        self.message_length_dropdown.setFixedHeight(30)
         self.message_length_dropdown.addItems(message_length_list)
         # Adds Items to Block
         self.message_length_block.layout().addWidget(self.message_length_label)
@@ -228,28 +221,48 @@ class OptionsPanel(QWidget):
         self.layout.addWidget(self.message_length_block)        
         
         #################################################
-        ##                   Emoji Use                 ##
+        ##                CheckBox Block               ##
         #################################################
         # Sets up a checkbox for emoji use
-        self.emoji_block = QWidget(self)
-        # Sets the layout for the Length block to QV
-        self.emoji_block.setLayout(QHBoxLayout(self))
-        # Adds a label to the Length block
-        self.emoji_label = QTextEdit(self)
-        self.emoji_label.setReadOnly(True)
-        self.emoji_label.setText("Emoji Use:")
-        # Sets Sizes for the label
-        self.emoji_label.setFixedSize(150, 30)
-        self.emoji_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        # Adds Items to List
+        self.checkbox_block = QWidget(self)
+        # Sets the layout for the checkbox block to QV
+        self.checkbox_block.setLayout(QHBoxLayout(self))
+        # Creates Checkbox for TTS
         self.emoji_checkbox = QCheckBox(self)
         # Adds Label to Checkbox
         self.emoji_checkbox.setText("Use Emojis")
         # Adds Items to Length Block
-        self.emoji_block.layout().addWidget(self.emoji_label)
-        self.emoji_block.layout().addWidget(self.emoji_checkbox)
-        # Adds Length Block to Main Layout
-        self.layout.addWidget(self.emoji_block)        
+        self.checkbox_block.layout().addWidget(self.emoji_checkbox)
+        
+        #################################################
+        ##                Text to Speech               ##
+        #################################################
+        # Sets up the Checkbox for the TTS
+        self.tts_block = QWidget(self)
+        # Sets the layout for the checkbox block to QV
+        self.tts_block.setLayout(QHBoxLayout(self))
+        # Creates Checkbox for TTS
+        self.tts_block = QCheckBox(self)
+        # Adds Label to Checkbox
+        self.tts_block.setText("Use TTS")
+        # Adds Items to to checkbox_block
+        self.checkbox_block.layout().addWidget(self.tts_block)
+        
+        #################################################
+        ##               Save TTS Message              ##
+        #################################################
+        # Sets up the Checkbox for the Save TTS Message
+        self.savetts_block = QWidget(self)
+        # Sets the layout for the checkbox block to QV
+        self.savetts_block.setLayout(QHBoxLayout(self))
+        # Cretes Checkbox for Save TTS Message
+        self.savetts_block = QCheckBox(self)
+        # Adds Label to Checkbox
+        self.savetts_block.setText("Save TTS Message")
+        # Adds Items to checkbox_block
+        self.checkbox_block.layout().addWidget(self.savetts_block)
+        
+        self.layout.addWidget(self.checkbox_block)
         
         #################################################
         ##               Question Field                ##
@@ -294,8 +307,14 @@ class OptionsPanel(QWidget):
         emoji = self.emoji_checkbox.isChecked()
         emoji = bc.emojiUse(emoji)
         
+        # Fetches the TTS use from the checkbox
+        tts = self.tts_block.isChecked()
+        
+        # Fetches the Save TTS Message use from the checkbox
+        savetts = self.savetts_block.isChecked()
+        
         # Creates a Worker for API Signals
-        query = QueryObject(apitoken, model_name, personality_description, message_length_description, token_limit, question, emoji)
+        query = QueryObject(apitoken, model_name, personality_description, message_length_description, token_limit, question, emoji, tts, savetts)
         self.APIWorker = SendAPI(query, self.baibot, self.messageCount)
         
         # Connect Messages to Console
@@ -306,8 +325,6 @@ class OptionsPanel(QWidget):
         # Add Worker to Threadpool
         self.APIThreadpool = QThreadPool()
         self.APIThreadpool.start(self.APIWorker)
-        
-        
 
 ############################################################################
 ##                       Worker Classes and Signals                       ##
@@ -315,7 +332,7 @@ class OptionsPanel(QWidget):
 from PySide6.QtCore import QRunnable, QObject, Signal, Slot
 
 class QueryObject:
-    def __init__(self, apitoken, model, personality, messagelength, tokenlimit, question, emoji):
+    def __init__(self, apitoken, model, personality, messagelength, tokenlimit, question, emoji, tts, savetts):
         self.apitoken = apitoken
         self.model = model
         self.personality = personality
@@ -323,6 +340,8 @@ class QueryObject:
         self.tokenlimit = tokenlimit
         self.question = question
         self.emoji = emoji
+        self.tts = tts
+        self.savetts = savetts
 
 #########################################################
 ##                -- Worker Signals --                 ##
@@ -356,8 +375,16 @@ class SendAPI(QRunnable):
         # Sends Response to Console
         self.signals.response.emit(response)
         
-        # Creates a TTS Message
-        bc.ttsMessage(response, self.messageCount)
+        if self.query.tts:
+            # Saves TTS Message
+            bc.ttsMessage(response, self.messageCount, self.query.savetts)
         
         # Sends Finished Signal to Console
         #self.signals.finished.emit(f'Finished Querying API')
+        
+        
+if __name__ == "__main__":
+    import sys
+    from main_app import main
+    app = main()
+    sys.exit(app.exit())

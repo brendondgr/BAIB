@@ -47,7 +47,7 @@ class BAI_commands:
                     mkdir(combined)
     
     @staticmethod
-    def ttsMessage(response, count):
+    def ttsMessage(response, count, savetts):
         import gtts
         from datetime import datetime
         from configparser import ConfigParser

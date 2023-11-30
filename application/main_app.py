@@ -5,7 +5,7 @@ from menu import Menu
 
 # Clears Console using command
 os.system('cls' if os.name == 'nt' else 'clear')
-        
+
 # Create an instance of the application
 class main(QApplication):
     def __init__(self):

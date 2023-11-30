@@ -1,30 +1,22 @@
 {
-    "Choose Option": {
-        "message": "",
-        "token": 4000
-    },
     "Very Short (1 Sentence)": {
-        "message": "Please keep your answer to a single sentence. Less than 20 words preferred. ",
+        "message": "Limit your response to 20 words, or 1 sentence. ",
         "token": 100
     },
     "Short (2-3 sentences)": {
-        "message": "Please keep your answer to 2-3 sentences. ",
+        "message": "Limit your response to 2-3 sentences. ",
         "token": 250
     },
     "Medium (1 paragraph)": {
-        "message": "Please keep your answer to a single paragraph (4-5 sentences). ",
+        "message": "Limit your response to 1 paragraphs. ",
         "token": 500
     },
     "Long (2-3 paragraphs)": {
-        "message": "Please keep your answer to 2-3 paragraphs. ",
+        "message": "Limit your response to 2-3 paragraphs. ",
         "token": 1250
     },
     "Very Long (4+ paragraphs)": {
-        "message": "Please keep your answer to 4+ paragraphs. ",
+        "message": "Limit your response to 4 paragraphs. ",
         "token": 2500
-    },
-    "Unlimited": {
-        "message": "Feel free to write as much as you like. ",
-        "token": 4000
     }
 }
